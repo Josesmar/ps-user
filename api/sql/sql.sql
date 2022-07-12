@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS ps-user;
-USE ps-user;
+CREATE DATABASE IF NOT EXISTS psusers;
+USE psusers;
 
 DROP TABLE IF EXISTS users;
 
@@ -11,6 +11,3 @@ CREATE TABLE users(
     password varchar(100) not null,
     createIn timestamp default current_timestamp()
 ) ENGINE=INNODB;
-
-
-

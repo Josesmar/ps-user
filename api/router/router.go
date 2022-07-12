@@ -1,12 +1,12 @@
 package router
 
 import (
-	"api/src/rotas"
+	"ps-user/router/routes"
 
 	"github.com/gorilla/mux"
 )
 
 func Generate() *mux.Router {
 	r := mux.NewRouter()
-	return rotas.Configurar(r)
+	return routes.Config(r)
 }

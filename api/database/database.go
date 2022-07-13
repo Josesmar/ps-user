@@ -9,7 +9,7 @@ import (
 
 // Conectar open conection in database and return data
 func Conection() (*sql.DB, error) {
-	db, err := sql.Open("mysql", configuration.StringConectionBanco)
+	db, err := sql.Open("postgres", configuration.StringConectionBanco)
 	if err != nil {
 		return nil, err
 	}

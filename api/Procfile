@@ -1,1 +1,1 @@
-web: ps-user
+web: go run ps-user

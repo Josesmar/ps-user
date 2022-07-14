@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"ps-user/configuration"
 	"ps-user/router"
 )
@@ -13,6 +13,14 @@ func main() {
 	configuration.Load()
 	r := router.Generate()
 
-	fmt.Printf("Escutando em porta %s:%d", configuration.IP, configuration.Port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", configuration.IP, configuration.Port), r))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("Defaulting to port %s", port)
+	}
+
+	log.Printf("Listening on port %s", port)
+	if err := http.ListenAndServe(":"+port, r); err != nil {
+		log.Fatal(err)
+	}
 }

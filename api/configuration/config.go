@@ -29,7 +29,7 @@ var (
 // Load go initializer variables environment
 func Load() {
 
-	StringConectionBanco = fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+	StringConectionBanco = fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=require",
 		host, port, user, password, name)
 
 	SecretKey = []byte(os.Getenv("SECRET_KEY"))

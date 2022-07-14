@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"ps-user/configuration"
 
-	_ "github.com/go-sql-driver/mysql" // Driver
+	_ "github.com/lib/pq"
 )
 
 // Conectar open conection in database and return data

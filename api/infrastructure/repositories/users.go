@@ -45,7 +45,7 @@ func (repository Users) Create(user models.User) (uint64, error) {
 // FindById return user in database
 func (repository Users) FindById(userID uint64) (models.User, error) {
 	lines, err := repository.db.Query(
-		"select id, name, nick, email, createIn from users where id = ?", userID,
+		"select id, name, nick, email, createIn from users where id =$1", userID,
 	)
 	if err != nil {
 		return models.User{}, err

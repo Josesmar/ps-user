@@ -2,19 +2,23 @@ package configuration
 
 import (
 	"fmt"
-	"log"
 	"os"
-	"strconv"
+)
 
-	"github.com/joho/godotenv"
+const (
+	host     = "ec2-34-233-115-14.compute-1.amazonaws.com"
+	port     = "5432"
+	user     = "tozekvgcqqqwbz"
+	password = "6948c75bb05afd43909011b3fd176e13506b31659adf5268411c460b5baebdbd"
+	name     = "dd2b5jm5v5gpsg"
 )
 
 var (
-	// StringConectionBanco is string conection with Mysql
+	// StringConectionBanco is string conection with postgres
 	StringConectionBanco = ""
 
 	// Port
-	Port = 0
+	Port = 9000
 
 	// Secretkey is key user signer token
 	SecretKey []byte
@@ -24,24 +28,9 @@ var (
 
 // Load go initializer variables environment
 func Load() {
-	var err error
-
-	if err = godotenv.Load(); err != nil {
-		log.Fatal(err)
-	}
-
-	Port, err = strconv.Atoi(os.Getenv("API_PORT"))
-	if err != nil {
-		Port = 9000
-	}
 
 	StringConectionBanco = fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_USUARIO"),
-		os.Getenv("DB_SENHA"),
-		os.Getenv("DB_NOME"),
-	)
+		host, port, user, password, name)
 
 	SecretKey = []byte(os.Getenv("SECRET_KEY"))
 	IP = os.Getenv("API_IP")

@@ -20,25 +20,16 @@ Create inserts a user into the database
 the return is uint64 because after being created an id must be returned
 */
 func (repository Users) Create(user models.User) (uint64, error) {
-	statement, err := repository.db.Prepare(
-		"insert into users (name, nick, email, password) values (?, ?, ? ,?)",
-	)
-	if err != nil {
-		return 0, err
-	}
-	defer statement.Close()
 
-	resultado, err := statement.Exec(user.Name, user.Nick, user.Email, user.PassWord)
+	var lastInsertId = 0
+	err := repository.db.QueryRow("insert into users (name, nick, email, password) values ($1, $2, $3, $4) RETURNING id",
+		user.Name, user.Nick, user.Email, user.PassWord).Scan(&lastInsertId)
+
 	if err != nil {
 		return 0, err
 	}
 
-	ultimoIDInserido, err := resultado.LastInsertId()
-	if err != nil {
-		return 0, err
-	}
-
-	return uint64(ultimoIDInserido), nil
+	return uint64(lastInsertId), nil
 
 }
 

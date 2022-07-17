@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"ps-user/database"
@@ -57,7 +58,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	userID, err := strconv.ParseUint(param["userID"], 10, 64)
 	if err != nil {
-		responses.Err(w, http.StatusBadRequest, err)
+		responses.Err(w, http.StatusBadRequest, errors.New("Id user deve ser inteiro"))
 		return
 	}
 	db, erro := database.Conection()
@@ -73,5 +74,11 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		responses.Err(w, http.StatusInternalServerError, erro)
 		return
 	}
+
+	if user.ID == 0 {
+		responses.Err(w, http.StatusNotFound, errors.New("Registro não encontrado"))
+		return
+	}
+
 	responses.JSON(w, http.StatusOK, user)
 }

@@ -33,7 +33,7 @@ func (user *User) Prepare(etapa string) error {
 
 func (user *User) validate(etapa string) error {
 	if user.Name == "" {
-		return errors.New("O nome é obrigatório e não pode estar em branco")
+		return errors.New("O name é obrigatório e não pode estar em branco")
 	}
 	if user.Nick == "" {
 		return errors.New("O nick é obrigatório e não pode estar em branco")
@@ -47,7 +47,7 @@ func (user *User) validate(etapa string) error {
 	}
 
 	if etapa == "cadastro" && user.PassWord == "" {
-		return errors.New("A senha é origatória e não pode estar em branco")
+		return errors.New("O password é obrigatório e não pode estar em branco")
 	}
 
 	return nil //valor zero do erro

@@ -21,10 +21,12 @@ func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
 }
 
 // Err return a err in format JSON
-func Err(w http.ResponseWriter, statusCode int, err error) {
+func Err(w http.ResponseWriter, statusCode int, err error, field string) {
 	JSON(w, statusCode, struct {
-		Err string `json:"erro"`
+		Field string `json:"field,omitempty"`
+		Err   string `json:"message"`
 	}{
-		Err: err.Error(),
+		Err:   err.Error(),
+		Field: field,
 	})
 }

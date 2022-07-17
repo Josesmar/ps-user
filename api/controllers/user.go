@@ -10,6 +10,7 @@ import (
 	"ps-user/infrastructure/repositories"
 	"ps-user/models"
 	"ps-user/responses"
+	"strings"
 
 	"github.com/lib/pq"
 
@@ -92,4 +93,25 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responses.JSON(w, http.StatusOK, user)
+}
+
+func GetAllUser(w http.ResponseWriter, r *http.Request) {
+	page := strings.ToLower(r.URL.Query().Get("page"))
+
+	db, erro := database.Conection()
+	if erro != nil {
+		responses.Err(w, http.StatusInternalServerError, erro, "")
+		return
+	}
+	defer db.Close()
+
+	repository := repositories.NewRepositoryUsers(db)
+	users, err := repository.FindAllUser(page)
+	if err != nil {
+		responses.Err(w, http.StatusInternalServerError, err, "")
+		return
+	}
+
+	responses.JSON(w, http.StatusOK, users)
+
 }

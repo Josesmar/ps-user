@@ -9,15 +9,21 @@ import (
 var routesUsers = []Route{
 
 	{
-		URI:                  "/user",
+		URI:                  "/users",
 		Method:               http.MethodPost,
 		Function:             controllers.CreateUser,
 		RequestAutentication: false,
 	},
 	{
-		URI:                  "/user/{userID}",
+		URI:                  "/users/{userID}",
 		Method:               http.MethodGet,
 		Function:             controllers.GetUser,
+		RequestAutentication: false,
+	},
+	{
+		URI:                  "/users",
+		Method:               http.MethodGet,
+		Function:             controllers.GetAllUser,
 		RequestAutentication: false,
 	},
 }

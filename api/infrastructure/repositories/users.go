@@ -3,6 +3,7 @@ package repositories
 import (
 	"database/sql"
 	"ps-user/models"
+	"strconv"
 )
 
 // Users represents a user repository
@@ -57,4 +58,40 @@ func (repository Users) FindById(userID uint64) (models.User, error) {
 	}
 
 	return user, nil
+}
+
+func (repository Users) FindAllUser(page string) ([]models.User, error) {
+	pageInt, err := strconv.Atoi(page)
+	if err != nil {
+		return nil, err
+	}
+
+	limit := 5
+	offset := limit*pageInt - 1
+	SQL := `select id, name, nick, email, createIn from users ORDER BY id DESC OFFSET $1 LIMIT $2;`
+
+	rows, err := repository.db.Query(SQL, offset, limit)
+
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	var users []models.User
+
+	for rows.Next() {
+		var user models.User
+
+		if err = rows.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Nick,
+			&user.Email,
+			&user.CreateIn,
+		); err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+	return users, nil
 }

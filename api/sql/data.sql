@@ -6,6 +6,7 @@ values
 ('Usuario 2', 'usuario_2', 'usuario2@gmail.com', '$10$HK/b0564d/TSyKUOBDOHe.qs3k6J2Q6RvUI2I2JFJ32nmd4HTgg7C'),
 ('Usuario 3', 'usuario_3', 'usuario3@gmail.com', '$10$HK/b0564d/TSyKUOBDOHe.qs3k6J2Q6RvUI2I2JFJ32nmd4HTgg7C'),
 ('Usuario 4', 'usuario_4', 'usuario4@gmail.com', '$10$HK/b0564d/TSyKUOBDOHe.qs3k6J2Q6RvUI2I2JFJ32nmd4HTgg7C');
+('Usuario 5', 'usuario_5', 'usuario5@gmail.com', '$10$HK/b0564d/TSyKUOBDOHe.qs3k6J2Q6RvUI2I2JFJ32nmd4HTgg7C');
 
 -- MYSQL
 

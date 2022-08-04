@@ -17,7 +17,6 @@ func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
 			log.Fatal(err)
 		}
 	}
-
 }
 
 // Err return a err in format JSON

@@ -10,6 +10,7 @@ import (
 	"ps-user/infrastructure/repositories"
 	"ps-user/models"
 	"ps-user/responses"
+	"ps-user/security"
 	"strings"
 
 	"github.com/lib/pq"
@@ -64,7 +65,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//GetUser get user in database
+// GetUser get user in database
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	param := mux.Vars(r)
 
@@ -113,5 +114,31 @@ func GetAllUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responses.JSON(w, http.StatusOK, users)
+
+}
+
+// ValidCredentials validation credentials user for oauth
+func ValidCredentials(w http.ResponseWriter, r *http.Request) {
+	user := strings.ToLower(r.URL.Query().Get("userName"))
+	password := strings.ToLower(r.URL.Query().Get("password"))
+
+	db, err := database.Conection()
+	if err != nil {
+		responses.Err(w, http.StatusInternalServerError, err, "")
+		return
+	}
+	defer db.Close()
+
+	repository := repositories.NewRepositoryUsers(db)
+	userValid, err := repository.FindByUserAndPassword(user)
+
+	if err = security.VerifyPassword(userValid.PassWord, password); err != nil {
+		responses.JSON(w, http.StatusOK, false)
+		return
+	}
+	if userValid.ID != 0 {
+		responses.JSON(w, http.StatusOK, true)
+		return
+	}
 
 }

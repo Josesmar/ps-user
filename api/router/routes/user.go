@@ -26,4 +26,10 @@ var routesUsers = []Route{
 		Function:             controllers.GetAllUser,
 		RequestAutentication: false,
 	},
+	{
+		URI:                  "/users/credentials/",
+		Method:               http.MethodGet,
+		Function:             controllers.ValidCredentials,
+		RequestAutentication: false,
+	},
 }

@@ -95,3 +95,26 @@ func (repository Users) FindAllUser(page string) ([]models.User, error) {
 	}
 	return users, nil
 }
+
+func (repository Users) FindByUserAndPassword(userName string) (models.User, error) {
+	lines, err := repository.db.Query(
+		"select id, name, nick, password from users where nick =$1", userName,
+	)
+	if err != nil {
+		return models.User{}, err
+	}
+	defer lines.Close()
+
+	var user models.User
+	if lines.Next() {
+		if err = lines.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Nick,
+			&user.PassWord,
+		); err != nil {
+			return models.User{}, err
+		}
+	}
+	return user, nil
+}

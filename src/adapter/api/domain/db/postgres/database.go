@@ -1,8 +1,8 @@
-package database
+package postgres
 
 import (
 	"database/sql"
-	"ps-user/configuration"
+	"ps-user/src/adapter/api/domain/configuration"
 
 	_ "github.com/lib/pq"
 )

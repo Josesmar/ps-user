@@ -6,11 +6,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"ps-user/database"
-	"ps-user/infrastructure/repositories"
-	"ps-user/models"
-	"ps-user/responses"
-	"ps-user/security"
+	"ps-user/src/adapter/api/domain/db/postgres"
+	"ps-user/src/adapter/api/domain/models"
+	"ps-user/src/adapter/api/domain/responses"
+	"ps-user/src/adapter/api/domain/security"
+	"ps-user/src/infrastructure/repositories"
+
 	"strings"
 
 	"github.com/lib/pq"
@@ -39,7 +40,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db, err := database.Conection()
+	db, err := postgres.Conection()
 	if err != nil {
 		responses.Err(w, http.StatusInternalServerError, err, "")
 		return
@@ -74,7 +75,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		responses.Err(w, http.StatusBadRequest, errors.New("Id user deve ser inteiro"), param["userID"])
 		return
 	}
-	db, erro := database.Conection()
+	db, erro := postgres.Conection()
 	if erro != nil {
 		responses.Err(w, http.StatusInternalServerError, erro, "")
 		return
@@ -99,7 +100,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 func GetAllUser(w http.ResponseWriter, r *http.Request) {
 	page := strings.ToLower(r.URL.Query().Get("page"))
 
-	db, erro := database.Conection()
+	db, erro := postgres.Conection()
 	if erro != nil {
 		responses.Err(w, http.StatusInternalServerError, erro, "")
 		return
@@ -122,7 +123,7 @@ func ValidCredentials(w http.ResponseWriter, r *http.Request) {
 	user := strings.ToLower(r.URL.Query().Get("userName"))
 	password := strings.ToLower(r.URL.Query().Get("password"))
 
-	db, err := database.Conection()
+	db, err := postgres.Conection()
 	if err != nil {
 		responses.Err(w, http.StatusInternalServerError, err, "")
 		return

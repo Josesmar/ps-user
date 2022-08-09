@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"database/sql"
-	"ps-user/models"
+	"ps-user/src/adapter/api/domain/models"
 	"strconv"
 )
 

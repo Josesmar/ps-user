@@ -143,3 +143,36 @@ func ValidCredentials(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+// DeleteUser delete user in database
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	param := mux.Vars(r)
+	userID, err := strconv.ParseUint(param["userID"], 10, 64)
+	if err != nil {
+		responses.Err(w, http.StatusBadRequest, errors.New("Id user deve ser inteiro"), param["userID"])
+		return
+	}
+	db, err := postgres.Conection()
+	if err != nil {
+		responses.Err(w, http.StatusInternalServerError, err, "")
+		return
+	}
+	defer db.Close()
+
+	repository := repositories.NewRepositoryUsers(db)
+	user, err := repository.FindById(userID)
+	if err != nil {
+		responses.Err(w, http.StatusInternalServerError, err, "")
+		return
+	}
+
+	if user.ID == 0 {
+		responses.Err(w, http.StatusNotFound, errors.New("Registro não encontrado"), string(userID))
+		return
+	}
+	if err = repository.DeleteById(userID); err != nil {
+		responses.Err(w, http.StatusInternalServerError, err, "")
+		return
+	}
+	responses.JSON(w, http.StatusOK, nil)
+}

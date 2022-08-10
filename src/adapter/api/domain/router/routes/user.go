@@ -32,4 +32,10 @@ var routesUsers = []Route{
 		Function:             controllers.ValidCredentials,
 		RequestAutentication: false,
 	},
+	{
+		URI:                  "/users/{userID}",
+		Method:               http.MethodDelete,
+		Function:             controllers.DeleteUser,
+		RequestAutentication: false,
+	},
 }

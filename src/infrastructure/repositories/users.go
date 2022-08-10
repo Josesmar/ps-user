@@ -118,3 +118,17 @@ func (repository Users) FindByUserAndPassword(userName string) (models.User, err
 	}
 	return user, nil
 }
+
+func (repository Users) DeleteById(userID uint64) error {
+	statement, erro := repository.db.Prepare("delete from users where id =$1")
+	if erro != nil {
+		return erro
+	}
+
+	defer statement.Close()
+
+	if _, erro = statement.Exec(userID); erro != nil {
+		return erro
+	}
+	return nil
+}

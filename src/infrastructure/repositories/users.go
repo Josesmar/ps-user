@@ -88,12 +88,35 @@ func (repository Users) FindAllUser(page string) ([]models.User, error) {
 			&user.Nick,
 			&user.Email,
 			&user.CreateIn,
+			&user.PageUser,
 		); err != nil {
 			return nil, err
 		}
 		users = append(users, user)
+
 	}
+
 	return users, nil
+}
+
+func (repository Users) ObterNumeroProdutos() int {
+
+	var sql string = `SELECT count(0) FROM users`
+
+	rows, err := repository.db.Query(sql)
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer rows.Close()
+
+	var totalUsers int = 0
+	for rows.Next() {
+		rows.Scan(&totalUsers)
+	}
+
+	return totalUsers
 }
 
 func (repository Users) FindByUserAndPassword(userName string) (models.User, error) {
@@ -106,6 +129,7 @@ func (repository Users) FindByUserAndPassword(userName string) (models.User, err
 	defer lines.Close()
 
 	var user models.User
+
 	if lines.Next() {
 		if err = lines.Scan(
 			&user.ID,
@@ -115,7 +139,9 @@ func (repository Users) FindByUserAndPassword(userName string) (models.User, err
 		); err != nil {
 			return models.User{}, err
 		}
+
 	}
+
 	return user, nil
 }
 

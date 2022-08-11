@@ -15,8 +15,14 @@ type User struct {
 	Name     string    `json:"name,omitempty"`
 	Nick     string    `json:"nick,omitempty"`
 	Email    string    `json:"email,omitempty"`
-	PassWord string    `json:"password,omitempt"`
+	PassWord string    `json:"password,omitempty"`
 	CreateIn time.Time `json:"creatIn,omitempty"`
+	PageUser PageUser  `json:"pages,omitempty"`
+}
+
+type PageUser struct {
+	totalElements int
+	totalPages    int
 }
 
 // Prepare will call methods to validate and format the received user

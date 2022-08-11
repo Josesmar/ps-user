@@ -88,7 +88,6 @@ func (repository Users) FindAllUser(page string) ([]models.User, error) {
 			&user.Nick,
 			&user.Email,
 			&user.CreateIn,
-			&user.PageUser,
 		); err != nil {
 			return nil, err
 		}

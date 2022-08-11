@@ -17,7 +17,6 @@ type User struct {
 	Email    string    `json:"email,omitempty"`
 	PassWord string    `json:"password,omitempty"`
 	CreateIn time.Time `json:"creatIn,omitempty"`
-	PageUser PageUser  `json:"pages,omitempty"`
 }
 
 type PageUser struct {

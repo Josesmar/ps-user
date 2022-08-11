@@ -53,7 +53,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		if pqErr, ok := err.(*pq.Error); ok {
 			switch pqErr.Code.Name() {
 			case "foreign_key_violation", "unique_violation":
-				responses.Err(w, http.StatusInternalServerError, errors.New(fmt.Sprintf("Usuario %s já existe. Entre com um usuário e um e-mail diferente.", user.Nick)), "nick")
+				responses.Err(w, http.StatusUnprocessableEntity, errors.New(fmt.Sprintf("Usuario %s já existe. Entre com um usuário e um e-mail diferente.", user.Nick)), "nick")
 				return
 			}
 		}

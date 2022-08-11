@@ -8,7 +8,7 @@ import (
 
 // JSON return a response in JSON for request
 func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
-	w.Header().Set("Content-Type", "application/json, charset=UTF-8")
+	w.Header().Set("Content-Type", "application/json, text/plain, charset=UTF-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	// w.Header().Set("Access-Control-Allow-Credentials", "true")

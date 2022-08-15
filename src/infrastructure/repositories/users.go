@@ -157,3 +157,17 @@ func (repository Users) DeleteById(userID uint64) error {
 	}
 	return nil
 }
+
+func (repository Users) Update(userID uint64, user models.User) error {
+	statement, err := repository.db.Prepare(
+		"update users set name =$1 where id=$2",
+	)
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+	if _, err := statement.Exec(user.Name, user.PassWord, user.ID); err != nil {
+		return err
+	}
+	return nil
+}

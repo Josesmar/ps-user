@@ -38,7 +38,7 @@ func (user *User) Prepare(etapa string) error {
 
 func (user *User) validate(etapa string) error {
 	if user.Name == "" {
-		return errors.New("O name é obrigatório e não pode estar em branco")
+		return errors.New("O nome é obrigatório e não pode estar em branco")
 	}
 	if user.Nick == "" {
 		return errors.New("O nick é obrigatório e não pode estar em branco")

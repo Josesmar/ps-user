@@ -176,3 +176,41 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	}
 	responses.JSON(w, http.StatusOK, nil)
 }
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	param := mux.Vars(r)
+	userID, err := strconv.ParseUint(param["userID"], 10, 64)
+	if err != nil {
+		responses.Err(w, http.StatusBadRequest, errors.New("Id user deve ser inteiro"), param["userID"])
+		return
+	}
+	corpoRequisicao, erro := ioutil.ReadAll(r.Body)
+	if erro != nil {
+		responses.Err(w, http.StatusUnprocessableEntity, erro, "")
+		return
+	}
+	var user models.User
+	if err = json.Unmarshal(corpoRequisicao, &user); err != nil {
+		responses.Err(w, http.StatusBadRequest, erro, "")
+		return
+	}
+
+	if err = user.Prepare("edicao"); err != nil {
+		responses.Err(w, http.StatusBadRequest, err, "")
+		return
+	}
+
+	db, err := postgres.Conection()
+	if err != nil {
+		responses.Err(w, http.StatusInternalServerError, err, "")
+		return
+	}
+	defer db.Close()
+
+	repository := repositories.NewRepositoryUsers(db)
+	if err := repository.Update(userID, user); err != nil {
+		responses.Err(w, http.StatusInternalServerError, erro, "")
+		return
+	}
+	responses.JSON(w, http.StatusNoContent, nil)
+}

@@ -98,7 +98,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllUser(w http.ResponseWriter, r *http.Request) {
-	page := strings.ToLower(r.URL.Query().Get("page"))
 
 	db, erro := postgres.Conection()
 	if erro != nil {
@@ -108,7 +107,7 @@ func GetAllUser(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	repository := repositories.NewRepositoryUsers(db)
-	users, err := repository.FindAllUser(page)
+	users, err := repository.FindAllUser()
 	if err != nil {
 		responses.Err(w, http.StatusInternalServerError, err, "")
 		return

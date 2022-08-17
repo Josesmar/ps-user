@@ -30,3 +30,11 @@ func Err(w http.ResponseWriter, statusCode int, err error, field string) {
 		Field: field,
 	})
 }
+
+func Sucess(w http.ResponseWriter, statusCode int, message string) {
+	JSON(w, statusCode, struct {
+		Message string `json:"message,omitempty"`
+	}{
+		Message: message,
+	})
+}

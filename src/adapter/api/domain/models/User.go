@@ -37,25 +37,32 @@ func (user *User) Prepare(etapa string) error {
 }
 
 func (user *User) validate(etapa string) error {
-	if user.Name == "" {
-		return errors.New("O nome é obrigatório e não pode estar em branco")
-	}
-	if user.Nick == "" {
-		return errors.New("O nick é obrigatório e não pode estar em branco")
-	}
-	if user.Email == "" {
-		return errors.New("O email é obrigatório e não pde estar em branco")
-	}
 
-	if erro := checkmail.ValidateFormat(user.Email); erro != nil {
-		return errors.New("O e-mail inserido é inválido")
+	switch etapa {
+	case "edicao":
+		if user.Name == "" {
+			return errors.New("O nome é obrigatório e não pode estar em branco")
+		}
+	case "cadastro":
+		if user.Name == "" {
+			return errors.New("O nome é obrigatório e não pode estar em branco")
+		}
+		if user.Nick == "" {
+			return errors.New("O nick é obrigatório e não pode estar em branco")
+		}
+		if user.Email == "" {
+			return errors.New("O email é obrigatório e não pde estar em branco")
+		}
+		if erro := checkmail.ValidateFormat(user.Email); erro != nil {
+			return errors.New("O e-mail inserido é inválido")
+		}
+		if user.PassWord == "" {
+			return errors.New("O password é obrigatório e não pode estar em branco")
+		}
+	default:
+		return nil
 	}
-
-	if etapa == "cadastro" && user.PassWord == "" {
-		return errors.New("O password é obrigatório e não pode estar em branco")
-	}
-
-	return nil //valor zero do erro
+	return nil
 }
 
 func (user *User) format(etapa string) error {

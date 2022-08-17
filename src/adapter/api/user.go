@@ -62,7 +62,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	responses.JSON(w, http.StatusCreated, fmt.Sprintf("Usuário %s - id: %d criado com sucesso!", user.Nick, user.ID))
+	responses.Sucess(w, http.StatusCreated, fmt.Sprintf("Usuário %s - id: %d criado com sucesso!", user.Nick, user.ID))
 
 }
 
@@ -176,6 +176,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	responses.JSON(w, http.StatusOK, nil)
 }
 
+//UpdateUser update data user
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	param := mux.Vars(r)
 	userID, err := strconv.ParseUint(param["userID"], 10, 64)

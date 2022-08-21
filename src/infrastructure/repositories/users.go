@@ -165,11 +165,15 @@ func (repository Users) Update(userID uint64, user models.User) error {
 
 func (repository Users) DeleteListId(IDs string) error {
 	sql := "delete from users where id in(" + IDs + ")"
-
 	statement, err := repository.db.Prepare(sql)
 	if err != nil {
 		return err
 	}
+
 	defer statement.Close()
+
+	if _, err = statement.Exec(); err != nil {
+		return err
+	}
 	return nil
 }

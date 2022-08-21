@@ -18,7 +18,7 @@ func Config(r *mux.Router) *mux.Router {
 	routes := routesUsers
 
 	for _, route := range routes {
-		r.HandleFunc(route.URI, route.Function).Methods(route.Method)
+		r.HandleFunc(route.URI, route.Function).Methods(route.Method, "OPTIONS")
 	}
 	return r
 }

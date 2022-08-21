@@ -5,14 +5,15 @@ import (
 	"net/http"
 	"os"
 	"ps-user/src/adapter/api/domain/configuration"
+	"ps-user/src/adapter/api/domain/middleware"
 	"ps-user/src/adapter/api/domain/router"
 )
 
 func main() {
 
 	configuration.Load()
-	r := router.Generate()
-
+	router := router.Generate()
+	router = middleware.Middleware(router)
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8085"
@@ -20,7 +21,7 @@ func main() {
 	}
 
 	log.Printf("Listening on port %s", port)
-	if err := http.ListenAndServe(":"+port, r); err != nil {
+	if err := http.ListenAndServe("127.0.0.1:"+port, router); err != nil {
 		log.Fatal(err)
 	}
 

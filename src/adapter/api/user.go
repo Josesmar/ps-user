@@ -214,3 +214,28 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	responses.JSON(w, http.StatusNoContent, nil)
 }
+
+// DeleteUser delete users in database
+func DeleteUsers(w http.ResponseWriter, r *http.Request) {
+	IDs := string(r.URL.Query().Get("ids"))
+
+	if IDs == "" {
+		responses.Err(w, http.StatusBadRequest, errors.New("Ids devem ser informados"), "")
+		return
+	}
+
+	db, err := postgres.Conection()
+	if err != nil {
+		responses.Err(w, http.StatusInternalServerError, err, "")
+		return
+	}
+	defer db.Close()
+
+	repository := repositories.NewRepositoryUsers(db)
+	err = repository.DeleteListId(IDs)
+	if err != nil {
+		responses.Err(w, http.StatusInternalServerError, err, "")
+		return
+	}
+	responses.JSON(w, http.StatusOK, nil)
+}

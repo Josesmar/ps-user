@@ -177,3 +177,33 @@ func (repository Users) DeleteListId(IDs string) error {
 	}
 	return nil
 }
+
+func (repository Users) FindListUsers(IDs string) ([]models.User, error) {
+	SQL := "select id, name, nick, email, createIn from users where id in(" + IDs + ")"
+	rows, err := repository.db.Query(SQL)
+
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	var users []models.User
+
+	for rows.Next() {
+		var user models.User
+
+		if err = rows.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Nick,
+			&user.Email,
+			&user.CreateIn,
+		); err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+
+	}
+
+	return users, nil
+}

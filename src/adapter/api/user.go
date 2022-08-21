@@ -232,6 +232,18 @@ func DeleteUsers(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	repository := repositories.NewRepositoryUsers(db)
+
+	user, erro := repository.FindListUsers(IDs)
+	if erro != nil {
+		responses.Err(w, http.StatusInternalServerError, err, "")
+		return
+	}
+
+	if user == nil {
+		responses.Err(w, http.StatusNotFound, errors.New("Registro não encontrado para o(s) id(s) informado(s)"), IDs)
+		return
+	}
+
 	err = repository.DeleteListId(IDs)
 	if err != nil {
 		responses.Err(w, http.StatusInternalServerError, err, "")

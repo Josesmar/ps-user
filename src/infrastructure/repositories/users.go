@@ -157,7 +157,7 @@ func (repository Users) Update(userID uint64, user models.User) error {
 		return err
 	}
 	defer statement.Close()
-	if _, err := statement.Exec(user.Name, user.PassWord, user.ID); err != nil {
+	if _, err := statement.Exec(user.Name, userID); err != nil {
 		return err
 	}
 	return nil

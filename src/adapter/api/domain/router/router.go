@@ -1,7 +1,7 @@
 package router
 
 import (
-	"ps-user/router/routes"
+	"ps-user/src/adapter/api/domain/router/routes"
 
 	"github.com/gorilla/mux"
 )

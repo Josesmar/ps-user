@@ -2,7 +2,7 @@ package models
 
 import (
 	"errors"
-	"ps-user/security"
+	"ps-user/src/adapter/api/domain/security"
 	"strings"
 	"time"
 
@@ -15,8 +15,13 @@ type User struct {
 	Name     string    `json:"name,omitempty"`
 	Nick     string    `json:"nick,omitempty"`
 	Email    string    `json:"email,omitempty"`
-	PassWord string    `json:"password,omitempt"`
+	PassWord string    `json:"password,omitempty"`
 	CreateIn time.Time `json:"creatIn,omitempty"`
+}
+
+type PageUser struct {
+	totalElements int
+	totalPages    int
 }
 
 // Prepare will call methods to validate and format the received user
@@ -32,25 +37,32 @@ func (user *User) Prepare(etapa string) error {
 }
 
 func (user *User) validate(etapa string) error {
-	if user.Name == "" {
-		return errors.New("O name é obrigatório e não pode estar em branco")
-	}
-	if user.Nick == "" {
-		return errors.New("O nick é obrigatório e não pode estar em branco")
-	}
-	if user.Email == "" {
-		return errors.New("O email é obrigatório e não pde estar em branco")
-	}
 
-	if erro := checkmail.ValidateFormat(user.Email); erro != nil {
-		return errors.New("O e-mail inserido é inválido")
+	switch etapa {
+	case "edicao":
+		if user.Name == "" {
+			return errors.New("O nome é obrigatório e não pode estar em branco")
+		}
+	case "cadastro":
+		if user.Name == "" {
+			return errors.New("O nome é obrigatório e não pode estar em branco")
+		}
+		if user.Nick == "" {
+			return errors.New("O nick é obrigatório e não pode estar em branco")
+		}
+		if user.Email == "" {
+			return errors.New("O email é obrigatório e não pde estar em branco")
+		}
+		if erro := checkmail.ValidateFormat(user.Email); erro != nil {
+			return errors.New("O e-mail inserido é inválido")
+		}
+		if user.PassWord == "" {
+			return errors.New("O password é obrigatório e não pode estar em branco")
+		}
+	default:
+		return nil
 	}
-
-	if etapa == "cadastro" && user.PassWord == "" {
-		return errors.New("O password é obrigatório e não pode estar em branco")
-	}
-
-	return nil //valor zero do erro
+	return nil
 }
 
 func (user *User) format(etapa string) error {

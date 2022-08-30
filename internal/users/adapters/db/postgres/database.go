@@ -2,7 +2,7 @@ package postgres
 
 import (
 	"database/sql"
-	"ps-user/src/adapter/api/domain/configuration"
+	"ps-user/internal/users/domain/configuration"
 
 	_ "github.com/lib/pq"
 )

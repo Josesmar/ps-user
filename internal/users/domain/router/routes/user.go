@@ -2,7 +2,7 @@ package routes
 
 import (
 	"net/http"
-	controllers "ps-user/src/adapter/api"
+	controllers "ps-user/internal/users/adapters/api"
 )
 
 //Routers users

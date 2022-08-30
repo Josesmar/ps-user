@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"database/sql"
-	"ps-user/src/adapter/api/domain/models"
+	"ps-user/internal/users/domain/models"
 )
 
 // Users represents a user repository

@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"ps-user/src/adapter/api/domain/configuration"
-	"ps-user/src/adapter/api/domain/middleware"
-	"ps-user/src/adapter/api/domain/router"
+	"ps-user/internal/users/domain/configuration"
+	"ps-user/internal/users/domain/middleware"
+	"ps-user/internal/users/domain/router"
 )
 
 func main() {

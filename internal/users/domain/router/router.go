@@ -1,7 +1,7 @@
 package router
 
 import (
-	"ps-user/src/adapter/api/domain/router/routes"
+	"ps-user/internal/users/domain/router/routes"
 
 	"github.com/go-chi/cors"
 	"github.com/gorilla/mux"

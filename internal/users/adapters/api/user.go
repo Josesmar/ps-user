@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"ps-user/src/adapter/api/domain/db/postgres"
-	"ps-user/src/adapter/api/domain/models"
-	"ps-user/src/adapter/api/domain/responses"
-	"ps-user/src/adapter/api/domain/security"
-	"ps-user/src/infrastructure/repositories"
+	"ps-user/internal/users/adapters/db/postgres"
+	"ps-user/internal/users/domain/models"
+	"ps-user/internal/users/domain/repositories"
+	"ps-user/internal/users/domain/responses"
+	"ps-user/internal/users/domain/security"
 
 	"strings"
 

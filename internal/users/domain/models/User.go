@@ -2,7 +2,7 @@ package models
 
 import (
 	"errors"
-	"ps-user/src/adapter/api/domain/security"
+	"ps-user/internal/users/domain/security"
 	"strings"
 	"time"
 

@@ -54,7 +54,7 @@ func (user *User) validate(etapa string) error {
 			return errors.New("O email é obrigatório e não pde estar em branco")
 		}
 		if erro := checkmail.ValidateFormat(user.Email); erro != nil {
-			return errors.New("O e-mail inserido é inválido")
+			return errors.New("E-mail inválido")
 		}
 		if user.PassWord == "" {
 			return errors.New("O password é obrigatório e não pode estar em branco")

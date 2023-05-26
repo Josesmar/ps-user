@@ -1,8 +1,9 @@
-package models
+package domain
 
 import (
 	"errors"
-	"ps-user/internal/users/domain/security"
+	"ps-user/internal/adapter/security"
+
 	"strings"
 	"time"
 
@@ -19,18 +20,13 @@ type User struct {
 	CreateIn time.Time `json:"creatIn,omitempty"`
 }
 
-type PageUser struct {
-	totalElements int
-	totalPages    int
-}
-
 // Prepare will call methods to validate and format the received user
 func (user *User) Prepare(etapa string) error {
-	if erro := user.validate(etapa); erro != nil {
-		return erro
+	if err := user.validate(etapa); err != nil {
+		return err
 	}
-	if erro := user.format(etapa); erro != nil {
-		return erro
+	if err := user.format(etapa); err != nil {
+		return err
 	}
 
 	return nil

@@ -1,25 +1,23 @@
-package repositories
+package postgres
 
 import (
 	"database/sql"
-	"ps-user/internal/users/domain/models"
+	"ps-user/internal/domain"
 )
 
-// Users represents a user repository
-type Users struct {
+type UserRepository struct {
 	db *sql.DB
 }
 
-// NewRepositoryUsers create a user repository
-func NewRepositoryUsers(db *sql.DB) *Users {
-	return &Users{db}
+func NewUserRepository(db *sql.DB) *UserRepository {
+	return &UserRepository{db}
 }
 
 /*
 Create inserts a user into the database
 the return is uint64 because after being created an id must be returned
 */
-func (repository Users) Create(user models.User) (uint64, error) {
+func (repository UserRepository) Create(user domain.User) (uint64, error) {
 
 	var lastInsertId = 0
 	err := repository.db.QueryRow("insert into users (name, nick, email, password) values ($1, $2, $3, $4) RETURNING id",
@@ -34,16 +32,16 @@ func (repository Users) Create(user models.User) (uint64, error) {
 }
 
 // FindById return user in database
-func (repository Users) FindById(userID uint64) (models.User, error) {
+func (repository UserRepository) FindById(userID uint64) (domain.User, error) {
 	lines, err := repository.db.Query(
 		"select id, name, nick, email, createIn from users where id =$1", userID,
 	)
 	if err != nil {
-		return models.User{}, err
+		return domain.User{}, err
 	}
 	defer lines.Close()
 
-	var user models.User
+	var user domain.User
 	if lines.Next() {
 		if err = lines.Scan(
 			&user.ID,
@@ -52,14 +50,14 @@ func (repository Users) FindById(userID uint64) (models.User, error) {
 			&user.Email,
 			&user.CreateIn,
 		); err != nil {
-			return models.User{}, err
+			return domain.User{}, err
 		}
 	}
 
 	return user, nil
 }
 
-func (repository Users) FindAllUser() ([]models.User, error) {
+func (repository UserRepository) FindAllUser() ([]domain.User, error) {
 	SQL := `select id, name, nick, email, createIn from users ORDER BY id;`
 	rows, err := repository.db.Query(SQL)
 
@@ -68,10 +66,10 @@ func (repository Users) FindAllUser() ([]models.User, error) {
 	}
 	defer rows.Close()
 
-	var users []models.User
+	var users []domain.User
 
 	for rows.Next() {
-		var user models.User
+		var user domain.User
 
 		if err = rows.Scan(
 			&user.ID,
@@ -89,7 +87,7 @@ func (repository Users) FindAllUser() ([]models.User, error) {
 	return users, nil
 }
 
-func (repository Users) ObterNumeroProdutos() int {
+func (repository UserRepository) ObterNumeroProdutos() int {
 
 	var sql string = `SELECT count(0) FROM users`
 
@@ -109,16 +107,16 @@ func (repository Users) ObterNumeroProdutos() int {
 	return totalUsers
 }
 
-func (repository Users) FindByUserAndPassword(userName string) (models.User, error) {
+func (repository UserRepository) FindByUserAndPassword(userName string) (domain.User, error) {
 	lines, err := repository.db.Query(
 		"select id, name, nick, password from users where nick =$1", userName,
 	)
 	if err != nil {
-		return models.User{}, err
+		return domain.User{}, err
 	}
 	defer lines.Close()
 
-	var user models.User
+	var user domain.User
 
 	if lines.Next() {
 		if err = lines.Scan(
@@ -127,7 +125,7 @@ func (repository Users) FindByUserAndPassword(userName string) (models.User, err
 			&user.Nick,
 			&user.PassWord,
 		); err != nil {
-			return models.User{}, err
+			return domain.User{}, err
 		}
 
 	}
@@ -135,7 +133,7 @@ func (repository Users) FindByUserAndPassword(userName string) (models.User, err
 	return user, nil
 }
 
-func (repository Users) DeleteById(userID uint64) error {
+func (repository UserRepository) DeleteById(userID uint64) error {
 	statement, erro := repository.db.Prepare("delete from users where id =$1")
 	if erro != nil {
 		return erro
@@ -149,7 +147,7 @@ func (repository Users) DeleteById(userID uint64) error {
 	return nil
 }
 
-func (repository Users) Update(userID uint64, user models.User) error {
+func (repository UserRepository) Update(user domain.User) error {
 	statement, err := repository.db.Prepare(
 		"update users set name =$1 where id=$2",
 	)
@@ -157,13 +155,13 @@ func (repository Users) Update(userID uint64, user models.User) error {
 		return err
 	}
 	defer statement.Close()
-	if _, err := statement.Exec(user.Name, userID); err != nil {
+	if _, err := statement.Exec(user.Name, user.ID); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (repository Users) DeleteListId(IDs string) error {
+func (repository UserRepository) DeleteListId(IDs string) error {
 	sql := "delete from users where id in(" + IDs + ")"
 	statement, err := repository.db.Prepare(sql)
 	if err != nil {
@@ -178,7 +176,7 @@ func (repository Users) DeleteListId(IDs string) error {
 	return nil
 }
 
-func (repository Users) FindListUsers(IDs string) ([]models.User, error) {
+func (repository UserRepository) FindListUsers(IDs string) ([]domain.User, error) {
 	SQL := "select id, name, nick, email, createIn from users where id in(" + IDs + ")"
 	rows, err := repository.db.Query(SQL)
 
@@ -187,10 +185,10 @@ func (repository Users) FindListUsers(IDs string) ([]models.User, error) {
 	}
 	defer rows.Close()
 
-	var users []models.User
+	var users []domain.User
 
 	for rows.Next() {
-		var user models.User
+		var user domain.User
 
 		if err = rows.Scan(
 			&user.ID,

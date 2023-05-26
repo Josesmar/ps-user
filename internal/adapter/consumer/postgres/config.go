@@ -2,15 +2,17 @@ package postgres
 
 import (
 	"database/sql"
-	"ps-user/internal/users/domain/configuration"
+	"ps-user/internal/adapter/config"
 
 	_ "github.com/lib/pq"
 )
 
-// Conectar open conection in database and return data
-func Conection() (*sql.DB, error) {
+type Postgres struct{}
 
-	db, err := sql.Open("postgres", configuration.StringConectionBanco)
+// Conectar open conection in database and return data
+func (p *Postgres) Conection() (*sql.DB, error) {
+
+	db, err := sql.Open("postgres", config.StringConectionBanco)
 	if err != nil {
 		return nil, err
 	}
